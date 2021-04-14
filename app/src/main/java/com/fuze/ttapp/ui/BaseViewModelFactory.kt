@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class BaseViewModelFactory
-@Inject constructor() : ViewModelProvider.Factory {
+@Inject constructor(): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {

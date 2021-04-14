@@ -10,7 +10,7 @@ import dagger.android.HasActivityInjector
 import io.reactivex.plugins.RxJavaPlugins
 import javax.inject.Inject
 
-class TweetSearchApplication : Application(),   HasActivityInjector {
+class TweetSearchApplication: Application(),   HasActivityInjector {
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
@@ -27,7 +27,6 @@ class TweetSearchApplication : Application(),   HasActivityInjector {
         applicationComponent.inject(this)
 
         setupDefaultRxJavaErrorHandler()
-
     }
 
     private fun setupDefaultRxJavaErrorHandler() {
@@ -36,9 +35,6 @@ class TweetSearchApplication : Application(),   HasActivityInjector {
         }
     }
 
-
     override fun activityInjector() = activityInjector
-
-
 
 }

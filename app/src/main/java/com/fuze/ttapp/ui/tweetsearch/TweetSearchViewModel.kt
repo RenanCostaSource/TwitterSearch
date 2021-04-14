@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class TweetSearchViewModel(  val tweetSearchUseCase: TweetSearchUseCase) : BaseViewModel()  {
+class TweetSearchViewModel(val tweetSearchUseCase: TweetSearchUseCase): BaseViewModel()  {
 
        var searchTweetLiveData = MutableLiveData<List<Twit>>()
     fun searchTweetObservable() = searchTweetLiveData
@@ -39,23 +39,19 @@ class TweetSearchViewModel(  val tweetSearchUseCase: TweetSearchUseCase) : BaseV
         compositeDisposable = CompositeDisposable(  )
     }
 
-
     fun search(query:String){
+            addDisposable(  tweetObservable(query).subscribe({
 
-
-            addDisposable(  tweetObservable(query) !!.subscribe({
-
-                  searchTweetLiveData.postValue(it.tweets)
+                  searchTweetLiveData.postValue(it.tweetsList)
               },{
                   Log.e("==error==","${it}")
               })
             )
     }
 
-    private fun tweetObservable(query: String) : Observable<TweetsResponse>?{
+    private fun tweetObservable(query: String) : Observable<TweetsResponse>{
 
         return tweetSearchUseCase.searchTweets(query).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
-
     }
 
     fun unSubscribeTweet(){

@@ -22,10 +22,8 @@ import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 
-
 @Module
 class NetworkModule {
-
 
     @Provides
     @Singleton
@@ -35,7 +33,11 @@ class NetworkModule {
     @Singleton
     internal fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        loggingInterceptor.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        }else {
+            HttpLoggingInterceptor.Level.NONE
+        }
         return loggingInterceptor
     }
 

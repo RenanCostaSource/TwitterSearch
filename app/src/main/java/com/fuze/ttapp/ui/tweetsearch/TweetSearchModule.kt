@@ -8,5 +8,7 @@ import dagger.Provides
 class TweetSearchModule {
 
     @Provides
-    fun provideViewModel(tweetSearchActivity: TweetSearchActivity , tweetSearchViewModelFactory: TweeterSearchViewModelFactory) = ViewModelProvider(tweetSearchActivity, tweetSearchViewModelFactory).get(TweetSearchViewModel::class.java)
+    fun provideViewModel(
+            tweetSearchActivity: TweetSearchActivity , tweetSearchViewModelFactory: TweeterSearchViewModelFactory
+    ) = ViewModelProvider(tweetSearchActivity, tweetSearchViewModelFactory).get(TweetSearchViewModel::class.java)
 }

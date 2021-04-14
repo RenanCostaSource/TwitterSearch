@@ -9,9 +9,8 @@ import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-
 class HeaderInterceptor @Inject
-internal constructor() : Interceptor {
+internal constructor(): Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -20,22 +19,20 @@ internal constructor() : Interceptor {
             val request = chain.request()
             val builder = request.newBuilder()
 
-
             return chain.proceed(builder.build())
         } catch (e: SocketTimeoutException) {
             return getFakeResponse(chain.request(), HttpURLConnection.HTTP_CLIENT_TIMEOUT)
         }
-
     }
 
     private fun getFakeResponse(request: Request, code: Int): Response {
         return Response.Builder().request(request)
             .code(code)
             .protocol(Protocol.HTTP_1_1).build()
-
     }
 
     companion object {
         private val TAG = "HeaderInterceptor"
     }
 }
+

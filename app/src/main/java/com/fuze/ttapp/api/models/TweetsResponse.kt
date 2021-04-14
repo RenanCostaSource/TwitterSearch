@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class TweetsResponse (
     @SerializedName("statuses")
-    var tweets: List<Twit>? = null
+    var tweetsList: List<Twit>? = null
 )
+

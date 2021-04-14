@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class UserProfileViewModel (  val tweetSearchUseCase: TweetSearchUseCase) : BaseViewModel()  {
+class UserProfileViewModel (val tweetSearchUseCase: TweetSearchUseCase): BaseViewModel()  {
 
     var searchUserLiveData = MutableLiveData<TwitterProfile>()
     fun searchUserObservable() = searchUserLiveData
@@ -22,19 +22,14 @@ class UserProfileViewModel (  val tweetSearchUseCase: TweetSearchUseCase) : Base
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private fun addDisposable(disposable: Disposable) {
-
         compositeDisposable.add(disposable)
-
     }
     override fun onCleared() {
-
         super.onCleared()
         compositeDisposable.dispose()
-
     }
 
     fun clearDispose(){
-
         compositeDisposable?.let {
             if (!it.isDisposed)
                 it.dispose()
@@ -42,45 +37,35 @@ class UserProfileViewModel (  val tweetSearchUseCase: TweetSearchUseCase) : Base
 
     }
     fun initCompositeDisposable(){
-
         compositeDisposable = CompositeDisposable()
-
     }
 
     fun searchUser(screen_name: String){
-
-        addDisposable(  userObservable(screen_name) !!.subscribe({
+        addDisposable(  userObservable(screen_name).subscribe({
             searchUserLiveData.postValue(it)
         }, {
             Log.e("==error==", "${it}")
         })
         )
-        addDisposable(  tweetObservable(screen_name) !!.subscribe({
+        addDisposable(  tweetObservable(screen_name).subscribe({
 
             userTweetLiveData.postValue(it)
         },{
             Log.e("==error==","${it}")
         })
         )
-
     }
 
-    private fun userObservable(screen_name: String) : Observable<TwitterProfile>?{
-
+    private fun userObservable(screen_name: String) : Observable<TwitterProfile>{
         return tweetSearchUseCase.getUserProfile(screen_name).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
-
     }
 
-    private fun tweetObservable(query: String) : Observable<List<Twit>>?{
-
+    private fun tweetObservable(query: String) : Observable<List<Twit>>{
         return tweetSearchUseCase.getUserTweets(query).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
-
     }
 
     fun unSubscribeUser(){
         clearDispose()
         initCompositeDisposable()
-
     }
-
 }

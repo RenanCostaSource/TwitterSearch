@@ -15,23 +15,19 @@ import java.io.UnsupportedEncodingException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
-class TweetSearchUseCase @Inject constructor ( private val mTwitterApi: ApiService ,
-                                               private val mSharedPreferences: AppPreferences
-
+class TweetSearchUseCase @Inject constructor ( private val twitterApi: ApiService ,
+                                               private val sharedPreferences: AppPreferences
 ) {
-
-    val mConsumerKey: String = "cT1evo5TGNTYkXGjEAUvIUpIS"
-    val mConsumerSecret: String = "j9Cc90QbNP8iBlv5HRKissGBXczarghDtJuGyJhYKe2ZBRBNq5"
+    val consumerKey: String = "cT1evo5TGNTYkXGjEAUvIUpIS"
+    val consumerSecret: String = "j9Cc90QbNP8iBlv5HRKissGBXczarghDtJuGyJhYKe2ZBRBNq5"
 
     private val authorizationHeader: String?
             get() {
         try {
-            val consumerKeyAndSecret = "$mConsumerKey:$mConsumerSecret"
+            val consumerKeyAndSecret = "$consumerKey:$consumerSecret"
             val data = consumerKeyAndSecret.toByteArray(charset("UTF-8"))
             val base64 = Base64.encodeToString(data, Base64.NO_WRAP)
-            Log.e("==auth==", base64)
             return "Basic $base64"
         } catch (e: UnsupportedEncodingException) {
             return null
@@ -40,15 +36,14 @@ class TweetSearchUseCase @Inject constructor ( private val mTwitterApi: ApiServi
 
     private val accessToken: String?
             get() {
-        val accessToken = mSharedPreferences.accessToken
+        val accessToken = sharedPreferences.accessToken
         if (TextUtils.isEmpty(accessToken)) {
             return null
         }
-        return "Bearer " + accessToken!!
+        return "Bearer $accessToken"
     }
 
     fun searchTweets(query: String)  : Observable<TweetsResponse> {
-        Log.i("==refreshing==","getting tweets")
         val accessToken = accessToken
         return if (TextUtils.isEmpty(accessToken)) {
             requestAccessTokenAndGetTweetList(query)
@@ -57,41 +52,38 @@ class TweetSearchUseCase @Inject constructor ( private val mTwitterApi: ApiServi
         }
     }
 
-
     private fun requestAccessTokenAndGetTweetList(
             query: String
-    )  : Observable<TweetsResponse> {
-        Log.i("==refreshing==","refreshing tweets")
+    ) : Observable<TweetsResponse> {
         return   reqAccessToken()
                 .flatMap {
             getTweetList(query)
         }
-            //.subscribeOn(Schedulers.io())
-            //    .observeOn(Schedulers.io())
     }
 
     fun reqAccessToken() : Observable<OAuthResponse> {
 
-        return mTwitterApi.getAccessTokn(authorizationHeader!!, "client_credentials")
+        return twitterApi.getAccessTokn(authorizationHeader.toString(), "client_credentials")
             .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .doOnNext {
             saveAccessToken(it.accessToken)
         }
-
-
     }
 
-    fun getTweetList(query: String) : Observable<TweetsResponse> {
-        return  mTwitterApi.searchTweet(accessToken!!, query).observeOn(Schedulers.io())//.observeOn(Schedulers.io())
+    fun getTweetList(query: String): Observable<TweetsResponse> {
+        return  twitterApi.searchTweet(accessToken.toString(), query).observeOn(Schedulers.io())
     }
-    fun getUserProfile(screen_name: String) : Observable<TwitterProfile>{
-        return mTwitterApi.userDetails(accessToken!!, screen_name).observeOn(Schedulers.io())
+
+    fun getUserProfile(screen_name: String): Observable<TwitterProfile>{
+        return twitterApi.userDetails(accessToken.toString(), screen_name).observeOn(Schedulers.io())
     }
-    fun getUserTweets(screen_name: String) : Observable<List<Twit>>{
-        return mTwitterApi.searchUserTweet(accessToken!!, screen_name).observeOn(Schedulers.io())
+
+    fun getUserTweets(screen_name: String): Observable<List<Twit>>{
+        return twitterApi.searchUserTweet(accessToken.toString(), screen_name).observeOn(Schedulers.io())
     }
+
     private fun saveAccessToken(accessToken: String) {
-        mSharedPreferences.accessToken =accessToken
+        sharedPreferences.accessToken =accessToken
     }
 }

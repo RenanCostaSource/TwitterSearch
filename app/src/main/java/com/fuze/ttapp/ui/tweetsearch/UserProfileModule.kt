@@ -8,5 +8,7 @@ import dagger.Provides
 class UserProfileModule {
 
     @Provides
-    fun provideViewModel(userProfileActivity: UserProfileActivity , userProfileViewModelFactory: UserProfileViewModelFactory) = ViewModelProvider(userProfileActivity, userProfileViewModelFactory).get(UserProfileViewModel::class.java)
+    fun provideViewModel(
+            userProfileActivity: UserProfileActivity , userProfileViewModelFactory: UserProfileViewModelFactory
+    ) = ViewModelProvider(userProfileActivity, userProfileViewModelFactory).get(UserProfileViewModel::class.java)
 }

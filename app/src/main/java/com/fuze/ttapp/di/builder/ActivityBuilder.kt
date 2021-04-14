@@ -7,7 +7,6 @@ import com.fuze.ttapp.ui.tweetsearch.UserProfileModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-
 @Module
 abstract class ActivityBuilder {
 

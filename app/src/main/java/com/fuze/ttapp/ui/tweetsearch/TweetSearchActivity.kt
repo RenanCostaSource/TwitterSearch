@@ -1,7 +1,5 @@
 package com.fuze.ttapp.ui.tweetsearch
 
-
-
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
@@ -16,8 +14,8 @@ import javax.inject.Inject
 const val USER = "com.fuze.ttapp.MESSAGE"
 class TweetSearchActivity : MainActivity<TweetSearchViewModel>() {
 
-    @Inject   lateinit var tweetSearchViewModel:TweetSearchViewModel
-    private var mAdapter: TweetAdapter? = null
+    @Inject   lateinit var tweetSearchViewModel: TweetSearchViewModel
+    private var tweetAdapter: TweetAdapter? = null
 
     override fun getViewModel(): TweetSearchViewModel  = tweetSearchViewModel
 
@@ -37,15 +35,14 @@ class TweetSearchActivity : MainActivity<TweetSearchViewModel>() {
     private fun setUpRecyclerView(){
         var linearLayoutManager= LinearLayoutManager(this)
         rv_tweet.layoutManager = linearLayoutManager
-        mAdapter = TweetAdapter(this)
-        rv_tweet.adapter = mAdapter
+        tweetAdapter = TweetAdapter(this)
+        rv_tweet.adapter = tweetAdapter
      }
 
     fun searchTweets(q:String){
         progress_bar.visibility=View.VISIBLE
         tweetSearchViewModel.search(q)
     }
-
 
     fun bindViewModels(){
         tweetSearchViewModel.searchTweetObservable().observe(this, Observer {
@@ -57,12 +54,12 @@ class TweetSearchActivity : MainActivity<TweetSearchViewModel>() {
     fun setData(it: List<Twit>?) {
         progress_bar.visibility=View.GONE
 
-        it?.let { it1 ->  mAdapter?.tweets = it1 }
+        it?.let { it1 ->  tweetAdapter?.tweetsList = it1 }
     }
 
     private fun setUpSearchView(){
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -87,4 +84,3 @@ class TweetSearchActivity : MainActivity<TweetSearchViewModel>() {
     }
 
 }
-

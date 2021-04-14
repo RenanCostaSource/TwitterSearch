@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import dagger.android.AndroidInjection
 
-abstract class MainActivity<out VM : BaseViewModel> : AppCompatActivity() {
+abstract class MainActivity<out VM: BaseViewModel>: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -16,6 +16,4 @@ abstract class MainActivity<out VM : BaseViewModel> : AppCompatActivity() {
         open fun hasInjector() = true
 
         abstract fun getViewModel(): VM
-
-
 }

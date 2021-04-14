@@ -1,6 +1,5 @@
 package com.fuze.ttapp.di.component
 
-
 import com.fuze.ttapp.TweetSearchApplication
 import com.fuze.ttapp.di.builder.ActivityBuilder
 import com.fuze.ttapp.di.module.ApplicationModule
@@ -13,5 +12,4 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun inject(app: TweetSearchApplication)
-
 }

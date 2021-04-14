@@ -8,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-
 @Module(includes = [(NetworkModule::class)])
 class ApplicationModule (val app: Application){
 
@@ -20,9 +19,7 @@ class ApplicationModule (val app: Application){
     @Singleton
     fun provideContext(): Context =app
 
-
     @Provides
     @Singleton
     internal fun providePreferencesHelper(appPreferencesImpl: AppPreferencesImpl): AppPreferences = appPreferencesImpl
-
 }

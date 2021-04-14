@@ -17,14 +17,14 @@ import java.util.ArrayList
 
 class TweetAdapter( internal var context: Context) :
     RecyclerView.Adapter<TweetAdapter.ViewHolder>() {
-      var tweets: List<Twit> = mutableListOf()
+      var tweetsList : List<Twit> = mutableListOf()
        set(value) {
            field=value
           notifyDataSetChanged()
        }
 
     fun clear() {
-        tweets = ArrayList()
+        tweetsList = ArrayList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,9 +34,9 @@ class TweetAdapter( internal var context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (user, body) = tweets[position]
-        holder.title.text = user!!.userName
-        holder.screentitle.text = "@"+user!!.screenName
+        val (user, body) = tweetsList[position]
+        holder.title.text = user?.userName
+        holder.screentitle.text = "@"+user?.screenName
         holder.message.text = body
         holder.itemView.setOnClickListener{
             val intent = Intent(context, UserProfileActivity::class.java).apply {
@@ -45,18 +45,16 @@ class TweetAdapter( internal var context: Context) :
             context.startActivity(intent)
         }
         Glide.with(context)
-            .load(user.imageUrl)
+            .load(user?.imageUrl)
             .centerCrop()
             .into(holder.imageView)
-
-
     }
 
     override fun getItemCount(): Int {
-        return tweets.size
+        return tweetsList.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById<View>(R.id.title) as TextView
         val screentitle: TextView = itemView.findViewById<View>(R.id.screentitle) as TextView
         val message: TextView = itemView.findViewById<View>(R.id.message) as TextView
